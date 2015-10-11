@@ -11,7 +11,16 @@
 /* ************************************************************************** */
 
 #include <ctype.h>
+#include <curses.h>
 #include <Board.hpp>
+#include <IGraphicHandler.hpp>
+#include <dlfcn.h>
+
+void 	dlerror_wrapper(void)
+{
+	std::cerr << "Error : " << dlerror() << std::endl;
+	exit(EXIT_FAILURE);
+}
 
 void	usage(void)
 {
@@ -41,6 +50,22 @@ int		main(int ac, char **av)
 		usage();
 	}
 	checkArgs(std::string(av[1]), std::string(av[2]));
+
 	Board board(std::atoi(av[1]), std::atoi(av[2]));
+
+
+	void *dl_handler;
+	IGraphicHandler *(*create)(void);
+
+	dl_handler = dlopen("./libraries/sfml/libsfml.so", RTLD_LAZY | RTLD_LOCAL);
+	create = (IGraphicHandler *(*)(void))dlsym(dl_handler, "create");
+	if (!create)
+		dlerror_wrapper();
+
+	IGraphicHandler *graph = create();
+
+	graph->createWindow(std::atoi(av[1]), std::atoi(av[2]));
+
+	dlclose(dl_handler);
 	return (0);
 }
