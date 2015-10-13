@@ -4,7 +4,7 @@ project(Nibbler)
 
 set(dev-warnings "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra -pedantic -std=c++11")
 set(warnings "${CMAKE_CXX_FLAGS} -O3 -std=c++11")
-set(CMAKE_CXX_FLAGS "${warnings}")
+set(CMAKE_CXX_FLAGS "${dev-warnings}")
 set(EXECUTABLE_NAME nibbler)
 set(SOURCE_FILES
   srcs/main.cpp

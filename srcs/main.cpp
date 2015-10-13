@@ -15,6 +15,7 @@
 #include <Board.hpp>
 #include <IGraphicHandler.hpp>
 #include <dlfcn.h>
+#include <map>
 
 void 	dlerror_wrapper(void)
 {
@@ -55,17 +56,38 @@ int		main(int ac, char **av)
 
 
 	void *dl_handler;
-	IGraphicHandler *(*create)(void);
+	IGraphicHandler *(*create)(int, int);
 
 	dl_handler = dlopen("./libraries/sfml/libsfml.so", RTLD_LAZY | RTLD_LOCAL);
-	create = (IGraphicHandler *(*)(void))dlsym(dl_handler, "create");
+	create = (IGraphicHandler *(*)(int, int))dlsym(dl_handler, "create");
 	if (!create)
 		dlerror_wrapper();
 
-	IGraphicHandler *graph = create();
+	IGraphicHandler *graph = create(std::atoi(av[1]), std::atoi(av[2]));
 
-	graph->createWindow(std::atoi(av[1]), std::atoi(av[2]));
+	graph->createWindow();
 
+	std::map<eKeys, std::string> map = {
+		{ eKeys::ESC, "ESC" },
+		{ eKeys::UP, "UP" },
+		{ eKeys::DOWN, "DOWN" },
+		{ eKeys::LEFT, "LEFT" },
+		{ eKeys::RIGHT, "RIGHT" }
+	};
+
+	while (board.isAlive){
+		eKeys key = graph->getKeyPressed();
+		if (map.find(key) != map.end()){
+			if (key == eKeys::UP){
+				graph->clearWindow();
+			}
+			else{
+				std::cout << map[key] << std::endl;
+			}
+		}
+		graph->clearWindow();
+		graph->draw();
+	}
 	dlclose(dl_handler);
 	return (0);
 }

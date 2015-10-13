@@ -23,10 +23,11 @@ class Board{
 		~Board(void);
 		Board(const Board & src);
 		Board &	operator=(Board const & rhs);
-		int	_width;
-		int _height;
+		bool isAlive;
 	private:
 		Board(void);
+		int	_width;
+		int _height;
 };
 
 #endif

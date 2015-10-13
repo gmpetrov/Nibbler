@@ -14,7 +14,7 @@
 
 Board::Board(void){}
 
-Board::Board(int width, int height) : _width(width), _height(height){
+Board::Board(int width, int height) : isAlive(true), _width(width), _height(height){
 	std::cout << "New Board : width =  " << width << ", height = " << height << std::endl;
 }
 
