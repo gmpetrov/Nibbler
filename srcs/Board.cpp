@@ -31,6 +31,8 @@ Board::Board(int width, int height) : isAlive(true), _width(width), _height(heig
 
 	_direction = eDirection::BABORD;
 
+	_food = _getRandomEmptyLocation();
+
 	updateMap();
 
 }
@@ -69,13 +71,32 @@ void	Board::printMap(void){
 }
 
 void	Board::updateMap(void){
+	if (!isAlive)
+		return ;
+
+	// Update snake position on the map
 	for (size_t i = 0; i < _snake.size(); i++){
 		int x = _snake[i].first;
 		int y = _snake[i].second;
-		if (_map[y][x] == eBlock::EMPTY){
+
+		if (i == 0){
+			_map[y][x] = eBlock::SNAKE_HEAD;
+		}
+		else if (_map[y][x] == eBlock::EMPTY || _map[y][x] == eBlock::SNAKE_HEAD){
 			_map[y][x] = eBlock::SNAKE;
 		}
+
+		if (x == _food.first && y == _food.second){
+			_map[y][x] = eBlock::SNAKE_HEAD;
+			_growUp();
+			_food = _getRandomEmptyLocation();
+		}
 	}
+
+	//Update food position on the map
+	int x = _food.first;
+	int y = _food.second;
+	_map[y][x] = eBlock::FOOD;
 }
 
 void 	Board::drawMap(IGraphicHandler *graph){
@@ -87,17 +108,17 @@ void 	Board::drawMap(IGraphicHandler *graph){
 			else if (_map[y][x] == eBlock::SNAKE){
 				graph->drawBlock(x, y, eColor::GREEN);
 			}
-			else if (_map[y][x] == eBlock::ITEM){
+			else if (_map[y][x] == eBlock::FOOD){
 				graph->drawBlock(x, y, eColor::RED);
 			}
 			else if (_map[y][x] == eBlock::SNAKE_HEAD){
-				graph->drawBlock(x, y, eColor::VIOLET);
+				graph->drawBlock(x, y, eColor::RED);
 			}
 		}
 	}
 }
 
-void	Board::iteration(void){
+void	Board::move(void){
 
 	// Get the coordinate of the last snake's block
 	int x = _snake[_snake.size() - 1].first;
@@ -112,19 +133,18 @@ void	Board::iteration(void){
 	}
 
 	// Updating the position of the head depending his direction
-	// and checking if snake is out of bounds
 	if (_direction == eDirection::TOP){
 		_snake[0].second -= 1;
+
+		// Checking if snake is out of bounds
 		if (_snake[0].second < 0){
 			isAlive = false;
-			exit(0);
 		}
 	}
 	else if (_direction == eDirection::BOTTOM){
 		_snake[0].second += 1;
 		if (_snake[0].second >= NUM_BLOCKS_Y){
 			isAlive = false;
-			exit(0);
 		}
 	}
 	else if (_direction == eDirection::TRIBORD){
@@ -161,4 +181,30 @@ void 	Board::handleKey(eKeys key){
 	else if (key == eKeys::RIGHT && _direction != eDirection::BABORD){
 		setDirection(eDirection::TRIBORD);
 	}
+}
+
+void	Board::_growUp(void){
+	std::pair<int, int> tmp = _snake[_snake.size() - 1];
+	int x = tmp.first;
+	int y = tmp.second;
+
+	_snake.push_back(std::make_pair(x + 1, y));
+
+}
+
+std::pair<int, int>	Board::_getRandomEmptyLocation(void){
+	std::vector<std::pair<int, int>> locations;
+
+	for (int y = 0; y < NUM_BLOCKS_Y; y++){
+		for (int x = 0; x < NUM_BLOCKS_X; x++){
+			if (_map[y][x] == eBlock::EMPTY){
+				locations.push_back(std::make_pair(x, y));
+			}
+		}
+	}
+
+	int size = locations.size() - 1;
+	int rnd = rand() % (size + 1);
+
+	return locations[rnd];
 }

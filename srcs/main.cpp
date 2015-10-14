@@ -52,8 +52,9 @@ int		main(int ac, char **av)
 	}
 	checkArgs(std::string(av[1]), std::string(av[2]));
 
-	Board board(std::atoi(av[1]), std::atoi(av[2]));
+	srand (time(NULL));
 
+	Board board(std::atoi(av[1]), std::atoi(av[2]));
 
 	void *dl_handler;
 	IGraphicHandler *(*create)(int, int);
@@ -85,7 +86,7 @@ int		main(int ac, char **av)
 		else{
 
 			// Unknown Key or no key pressed so default iteration
-			board.iteration();
+			board.move();
 		}
 		graph->clearWindow();
 		board.drawMap(graph);

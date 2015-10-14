@@ -8,6 +8,7 @@ enum eKeys {
 	DOWN,
 	LEFT,
 	RIGHT,
+	SPACE,
 	ONE,
 	TWO,
 	THREE
@@ -17,7 +18,8 @@ enum eBlock {
 	EMPTY = 0,
 	SNAKE,
 	SNAKE_HEAD,
-	ITEM
+	FOOD,
+	BONUS
 };
 
 enum eColor {
