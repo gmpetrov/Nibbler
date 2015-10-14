@@ -14,13 +14,15 @@ SfmlHandler::SfmlHandler(int width, int height) : _w(width), _h(height){
 		{ sf::Keyboard::Num3, eKeys::THREE }
 	};
 
-	// _colorMap = {
-	// 	{ eColor::BLACK, sf::Color(0, 0, 0) },
-	// 	{ eColor::DARK_BLUE, sf::Color(52, 73, 94) },
-	// 	{ eColor::BLUE, sf::Color(22, 160, 133) },
-	// 	{ eColor::RED, sf::Color(231, 76, 60) },
-	// 	{ eColor::GREEN, sf::Color(46, 204, 113) }
-	// };
+	this->_colorMap = {
+		{ eColor::BLACK, sf::Color(0, 0, 0) },
+		{ eColor::DARK_BLUE, sf::Color(52, 73, 94) },
+		{ eColor::BLUE, sf::Color(22, 160, 133) },
+		{ eColor::RED, sf::Color(231, 76, 60) },
+		{ eColor::GREEN, sf::Color(46, 204, 113) }
+	};
+
+	std::cout << "I'am the sfml shared library" << std::endl;
 }
 
 SfmlHandler::~SfmlHandler(void){}
@@ -32,17 +34,21 @@ SfmlHandler::SfmlHandler(const SfmlHandler & src)
 
 SfmlHandler & SfmlHandler::operator=(const SfmlHandler & rhs)
 {
-	(void)rhs;
+	_w = rhs.getWidth();
+	_h = rhs.getHeight();
 	return *this;
+}
+
+int		SfmlHandler::getWidth(void) const{
+	return _w;
+}
+
+int 	SfmlHandler::getHeight(void) const{
+	return _h;
 }
 
 std::map<int, eKeys>	SfmlHandler::getKeyMap(void){
 	return this->_keyMap;
-}
-
-void SfmlHandler::announce(void)
-{
-	std::cout << "I'am the sfml shared library" << std::endl;
 }
 
 void SfmlHandler::createWindow(void)
@@ -74,28 +80,43 @@ eKeys SfmlHandler::getKeyPressed(void)
 	return eKeys::UNKNOWN;
 }
 
-// sf::Color SfmlHandler::_getColor(eColor color){
-// 	if (_colorMap.find(color) != _colorMap.end()){
-// 		return (_colorMap[color]);
-// 	}
-// 	return sf::Color(55, 55, 55);
+sf::Color SfmlHandler::_getColor(eColor color){
+	if (_colorMap.find(color) != _colorMap.end()){
+		return (_colorMap[color]);
+	}
+	return sf::Color(55, 55, 55);
+}
+
+// void SfmlHandler::draw(void){
+// 	// définit un rectangle de 120x50
+// 	sf::RectangleShape rectangle(sf::Vector2f(120, 50));
+
+// 	// change sa taille en 100x100
+// 	rectangle.setSize(sf::Vector2f(100, 100));
+// 	rectangle.setOutlineThickness(2);
+// 	rectangle.setOutlineColor(sf::Color::Green);
+
+// 	_window->draw(rectangle);
 // }
 
-void SfmlHandler::draw(void){
-	// définit un rectangle de 120x50
-	sf::RectangleShape rectangle(sf::Vector2f(120, 50));
-
-	// change sa taille en 100x100
-	rectangle.setSize(sf::Vector2f(100, 100));
-	rectangle.setOutlineThickness(2);
-	rectangle.setOutlineColor(sf::Color::Green);
-
-	_window->draw(rectangle);
+void SfmlHandler::show(){
 	_window->display();
 }
 
 void SfmlHandler::clearWindow(void){
 	_window->clear(sf::Color::Black);
+}
+
+void SfmlHandler::drawBlock(int x, int y, eColor color){
+
+	// définit un rectangle de 120x50
+	sf::RectangleShape block(sf::Vector2f(_w / NUM_BLOCKS_X , _h / NUM_BLOCKS_Y));
+
+	block.setPosition(x * (_w / NUM_BLOCKS_X), y * (_h / NUM_BLOCKS_Y));
+
+	block.setFillColor(_getColor(color));
+
+	_window->draw(block);
 }
 
 extern "C" IGraphicHandler *create(int w, int h)

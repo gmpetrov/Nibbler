@@ -78,15 +78,16 @@ int		main(int ac, char **av)
 	while (board.isAlive){
 		eKeys key = graph->getKeyPressed();
 		if (map.find(key) != map.end()){
-			if (key == eKeys::UP){
-				graph->clearWindow();
+			if (key == eKeys::ESC){
+				board.quit();
 			}
 			else{
 				std::cout << map[key] << std::endl;
 			}
 		}
 		graph->clearWindow();
-		graph->draw();
+		board.drawMap(graph);
+		graph->show();
 	}
 	dlclose(dl_handler);
 	return (0);

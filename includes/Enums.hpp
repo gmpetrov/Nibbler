@@ -13,7 +13,7 @@ enum eKeys {
 	THREE
 };
 
-enum eTile {
+enum eBlock {
 	EMPTY = 0,
 	SNAKE,
 	ITEM

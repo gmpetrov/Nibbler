@@ -6,7 +6,9 @@
 # include <SFML/Graphics.hpp>
 # include <SFML/Window.hpp>
 
-# define SQUARE_SIZE 20
+# define BLOCK_SIZE 20
+# define NUM_BLOCKS_X 100
+# define NUM_BLOCKS_Y 100
 
 class SfmlHandler : public IGraphicHandler{
 public:
@@ -14,13 +16,14 @@ public:
 	SfmlHandler(const SfmlHandler & src);
 	SfmlHandler &	operator=(SfmlHandler const & rhs);
 	~SfmlHandler(void);
+	int getWidth() const;
+	int getHeight() const;
 
-	void announce(void);
 	void createWindow(void);
 	eKeys getKeyPressed(void);
 	void clearWindow(void);
-	void draw(void);
 	void drawBlock(int x, int y, eColor color);
+	void show(void);
 
 	std::map<int, eKeys> getKeyMap();
 
@@ -28,7 +31,7 @@ private:
 	sf::Color _getColor(eColor);
 
 	std::map<int, eKeys> _keyMap;
-	std::map<eKeys, sf::Color> _colorMap;
+	std::map<eColor, sf::Color> _colorMap;
 	sf::RenderWindow *_window;
 	int	_w;
 	int _h;
