@@ -6,7 +6,7 @@ set(SOURCE_FILES srcs/SfmlHandler.cpp)
 
 set(CMAKE_MODULE_PATH /usr/local/Cellar/sfml/2.2/share/SFML/cmake/Modules)
 
-find_package(SFML 2 REQUIRED system window graphics)
+find_package(SFML 2 REQUIRED system window graphics audio)
 
 include_directories(includes)
 add_library(${EXECUTABLE_NAME} MODULE ${SOURCE_FILES})

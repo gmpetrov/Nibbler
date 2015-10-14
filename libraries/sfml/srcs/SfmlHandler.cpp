@@ -19,7 +19,9 @@ SfmlHandler::SfmlHandler(int width, int height) : _w(width), _h(height){
 		{ eColor::DARK_BLUE, sf::Color(52, 73, 94) },
 		{ eColor::BLUE, sf::Color(22, 160, 133) },
 		{ eColor::RED, sf::Color(231, 76, 60) },
-		{ eColor::GREEN, sf::Color(46, 204, 113) }
+		{ eColor::GREEN, sf::Color(46, 204, 113) },
+		{ eColor::VIOLET, sf::Color(61, 35, 71) }
+
 	};
 
 	std::cout << "I'am the sfml shared library" << std::endl;

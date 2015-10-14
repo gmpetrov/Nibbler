@@ -5,6 +5,7 @@
 # include <IGraphicHandler.hpp>
 # include <SFML/Graphics.hpp>
 # include <SFML/Window.hpp>
+# include <SFML/Audio.hpp>
 
 # define BLOCK_SIZE 20
 # define NUM_BLOCKS_X 100

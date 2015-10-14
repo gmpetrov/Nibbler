@@ -78,12 +78,14 @@ int		main(int ac, char **av)
 	while (board.isAlive){
 		eKeys key = graph->getKeyPressed();
 		if (map.find(key) != map.end()){
-			if (key == eKeys::ESC){
-				board.quit();
-			}
-			else{
-				std::cout << map[key] << std::endl;
-			}
+
+			// Pressed Key is mapped
+			board.handleKey(key);
+		}
+		else{
+
+			// Unknown Key or no key pressed so default iteration
+			board.iteration();
 		}
 		graph->clearWindow();
 		board.drawMap(graph);

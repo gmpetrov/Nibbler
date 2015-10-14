@@ -35,13 +35,19 @@ class Board{
 		void initMap(void);
 		void printMap(void);
 		void drawMap(IGraphicHandler *graph);
+		void updateMap(void);
+		void iteration(void);
+		void setDirection(eDirection);
+		void handleKey(eKeys);
 
 		bool isAlive;
 	private:
 		Board(void);
 		int	_width;
 		int _height;
+		eDirection _direction;
 		std::vector<std::vector<eBlock>> _map;
+		std::vector<std::pair<int, int>> _snake;
 		// std::vector<std::vector<int>> _m(NUM_BLOCKS_Y, std::vector<int>(NUM_BLOCKS_X));
 };
 
