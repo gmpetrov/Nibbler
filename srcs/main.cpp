@@ -35,7 +35,7 @@ int		main(int ac, char **av)
 
 	GraphSwitch graphic(std::atoi(av[1]), std::atoi(av[2]));
 
-	graphic.setGraphic("ncurses");
+	graphic.setGraphic("sfml");
 
 	std::map<eKeys, std::string> map = {
 		{ eKeys::ESC, "ESC" },
@@ -56,6 +56,8 @@ int		main(int ac, char **av)
 				graphic.setGraphic("sfml");
 			else if (key == eKeys::TWO)
 				graphic.setGraphic("ncurses");
+			else if (key == eKeys::THREE)
+				graphic.setGraphic("sdl");
 			else
 				board.handleKey(key);
 		}
