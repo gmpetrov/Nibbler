@@ -3,6 +3,7 @@
 
 # include <map>
 # include <IGraphicHandler.hpp>
+# include <vector>
 # include <SDL2/SDL.h>
 
 class SdlHandler : public IGraphicHandler{
@@ -25,9 +26,11 @@ public:
 
 private:
 	std::map<int, eKeys> _keyMap;
+	std::map<eColor, std::vector<int>>	_colorMap;
 	int	_w;
 	int _h;
 	SDL_Window *_window;
+	SDL_Renderer *_renderer;
 };
 
 #endif //SFML_HANDLER_HPP
