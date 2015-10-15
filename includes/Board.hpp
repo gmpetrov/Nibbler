@@ -21,10 +21,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-# define BLOCK_SIZE 20
-# define NUM_BLOCKS_X 100
-# define NUM_BLOCKS_Y 100
-
 class Board{
 	public:
 		Board(int width, int height);

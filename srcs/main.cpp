@@ -13,9 +13,63 @@
 #include <ctype.h>
 #include <curses.h>
 #include <Board.hpp>
-#include <IGraphicHandler.hpp>
-#include <dlfcn.h>
 #include <map>
+#include <unistd.h>
+#include <GraphSwitch.hpp>
+
+void 	dlerror_wrapper(void);
+void	usage(void);
+bool	isStringDigit(std::string s);
+void 	checkArgs(std::string s1, std::string s2);
+
+int		main(int ac, char **av)
+{
+	if (ac != 3){
+		usage();
+	}
+	checkArgs(std::string(av[1]), std::string(av[2]));
+
+	srand (time(NULL));
+
+	Board board(std::atoi(av[1]), std::atoi(av[2]));
+
+	GraphSwitch graphic(std::atoi(av[1]), std::atoi(av[2]));
+
+	graphic.setGraphic("ncurses");
+
+	std::map<eKeys, std::string> map = {
+		{ eKeys::ESC, "ESC" },
+		{ eKeys::UP, "UP" },
+		{ eKeys::DOWN, "DOWN" },
+		{ eKeys::LEFT, "LEFT" },
+		{ eKeys::RIGHT, "RIGHT" },
+		{ eKeys::ONE, "1" },
+		{ eKeys::TWO, "2" },
+		{ eKeys::THREE, "3" }
+	};
+
+	while (board.isAlive){
+		eKeys key = graphic.graph->getKeyPressed();
+		if (map.find(key) != map.end()){
+			// Pressed Key is mapped
+			if (key == eKeys::ONE)
+				graphic.setGraphic("sfml");
+			else if (key == eKeys::TWO)
+				graphic.setGraphic("ncurses");
+			else
+				board.handleKey(key);
+		}
+		else{
+			// Unknown Key or no key pressed so default iteration
+			board.move();
+		}
+		graphic.graph->clearWindow();
+		board.drawMap(graphic.graph);
+		graphic.graph->show();
+	}
+	// dlclose(dl_handler);
+	return (0);
+}
 
 void 	dlerror_wrapper(void)
 {
@@ -42,56 +96,4 @@ void 	checkArgs(std::string s1, std::string s2){
 	if (!isStringDigit(s1) || !isStringDigit(s2)){
 		usage();
 	}
-}
-
-int		main(int ac, char **av)
-{
-	(void) av;
-	if (ac != 3){
-		usage();
-	}
-	checkArgs(std::string(av[1]), std::string(av[2]));
-
-	srand (time(NULL));
-
-	Board board(std::atoi(av[1]), std::atoi(av[2]));
-
-	void *dl_handler;
-	IGraphicHandler *(*create)(int, int);
-
-	dl_handler = dlopen("./libraries/sfml/libsfml.so", RTLD_LAZY | RTLD_LOCAL);
-	create = (IGraphicHandler *(*)(int, int))dlsym(dl_handler, "create");
-	if (!create)
-		dlerror_wrapper();
-
-	IGraphicHandler *graph = create(std::atoi(av[1]), std::atoi(av[2]));
-
-	graph->createWindow();
-
-	std::map<eKeys, std::string> map = {
-		{ eKeys::ESC, "ESC" },
-		{ eKeys::UP, "UP" },
-		{ eKeys::DOWN, "DOWN" },
-		{ eKeys::LEFT, "LEFT" },
-		{ eKeys::RIGHT, "RIGHT" }
-	};
-
-	while (board.isAlive){
-		eKeys key = graph->getKeyPressed();
-		if (map.find(key) != map.end()){
-
-			// Pressed Key is mapped
-			board.handleKey(key);
-		}
-		else{
-
-			// Unknown Key or no key pressed so default iteration
-			board.move();
-		}
-		graph->clearWindow();
-		board.drawMap(graph);
-		graph->show();
-	}
-	dlclose(dl_handler);
-	return (0);
 }

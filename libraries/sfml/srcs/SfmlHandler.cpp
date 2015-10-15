@@ -1,8 +1,7 @@
 #include "SfmlHandler.hpp"
 
 SfmlHandler::SfmlHandler(int width, int height) : _w(width), _h(height){
-	(void)_w;
-	(void)_h;
+
 	this->_keyMap = {
 		{ sf::Keyboard::Escape, eKeys::ESC },
 		{ sf::Keyboard::Up, eKeys::UP },
@@ -24,6 +23,7 @@ SfmlHandler::SfmlHandler(int width, int height) : _w(width), _h(height){
 
 	};
 
+	createWindow();
 	std::cout << "I'am the sfml shared library" << std::endl;
 }
 
@@ -111,7 +111,7 @@ void SfmlHandler::clearWindow(void){
 
 void SfmlHandler::drawBlock(int x, int y, eColor color){
 
-	// définit un rectangle de 120x50
+	// Create a Rectangle
 	sf::RectangleShape block(sf::Vector2f(_w / NUM_BLOCKS_X , _h / NUM_BLOCKS_Y));
 
 	block.setPosition(x * (_w / NUM_BLOCKS_X), y * (_h / NUM_BLOCKS_Y));
@@ -119,6 +119,12 @@ void SfmlHandler::drawBlock(int x, int y, eColor color){
 	block.setFillColor(_getColor(color));
 
 	_window->draw(block);
+}
+
+void SfmlHandler::close(void){
+	if (_window->isOpen()){
+		_window->close();
+	}
 }
 
 extern "C" IGraphicHandler *create(int w, int h)

@@ -8,10 +8,10 @@ enum eKeys {
 	DOWN,
 	LEFT,
 	RIGHT,
-	SPACE,
 	ONE,
 	TWO,
-	THREE
+	THREE,
+	SPACE
 };
 
 enum eBlock {

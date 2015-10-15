@@ -137,22 +137,22 @@ void	Board::move(void){
 		_snake[0].second -= 1;
 
 		// Checking if snake is out of bounds
-		if (_snake[0].second < 0){
+		if (_snake[0].second < 0 || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE)){
 			isAlive = false;
 		}
 	}
 	else if (_direction == eDirection::BOTTOM){
 		_snake[0].second += 1;
-		if (_snake[0].second >= NUM_BLOCKS_Y){
+		if (_snake[0].second >= NUM_BLOCKS_Y || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE)){
 			isAlive = false;
 		}
 	}
 	else if (_direction == eDirection::TRIBORD){
 		_snake[0].first += 1;
-		if (_snake[0].first >= NUM_BLOCKS_X)
+		if (_snake[0].first >= NUM_BLOCKS_X || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE))
 			isAlive = false;
 	}
-	else if (_direction == eDirection::BABORD){
+	else if (_direction == eDirection::BABORD || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE)){
 		_snake[0].first -= 1;
 		if (_snake[0].first < 0)
 			isAlive = false;

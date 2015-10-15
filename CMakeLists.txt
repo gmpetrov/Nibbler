@@ -9,11 +9,13 @@ set(EXECUTABLE_NAME nibbler)
 set(SOURCE_FILES
   srcs/main.cpp
   srcs/Board.cpp
+  srcs/GraphSwitch.cpp
 )
 
 include_directories(includes)
 
 add_subdirectory(libraries/sfml)
+add_subdirectory(libraries/ncurses)
 
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_DL_LIBS})

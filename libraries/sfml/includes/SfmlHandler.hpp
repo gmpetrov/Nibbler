@@ -7,10 +7,6 @@
 # include <SFML/Window.hpp>
 # include <SFML/Audio.hpp>
 
-# define BLOCK_SIZE 20
-# define NUM_BLOCKS_X 100
-# define NUM_BLOCKS_Y 100
-
 class SfmlHandler : public IGraphicHandler{
 public:
 	SfmlHandler(int w, int h);
@@ -25,6 +21,7 @@ public:
 	void clearWindow(void);
 	void drawBlock(int x, int y, eColor color);
 	void show(void);
+	void close(void);
 
 	std::map<int, eKeys> getKeyMap();
 
