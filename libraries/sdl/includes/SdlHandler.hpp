@@ -5,6 +5,7 @@
 # include <IGraphicHandler.hpp>
 # include <vector>
 # include <SDL2/SDL.h>
+# include <SDL2/SDL_ttf.h>
 
 class SdlHandler : public IGraphicHandler{
 public:
@@ -21,6 +22,7 @@ public:
 	void drawBlock(int x, int y, eColor color);
 	void show(void);
 	void close(void);
+	void drawBonus(int);
 
 	std::map<int, eKeys> getKeyMap();
 
@@ -31,6 +33,7 @@ private:
 	int _h;
 	SDL_Window *_window;
 	SDL_Renderer *_renderer;
+	TTF_Font *_font;
 };
 
 #endif //SFML_HANDLER_HPP

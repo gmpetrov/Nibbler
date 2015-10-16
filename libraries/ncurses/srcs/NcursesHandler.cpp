@@ -5,6 +5,7 @@ NcursesHandler::NcursesHandler(int width, int height) : _w(width), _h(height){
 	initscr();
 
 	_window = newwin(_h, _w, 0, 0);
+
 	// Enable colors
 	start_color();
 
@@ -35,12 +36,16 @@ NcursesHandler::NcursesHandler(int width, int height) : _w(width), _h(height){
 	init_color(COLOR_GREEN, 46, 204, 113); 	// 3
 	init_color(COLOR_CYAN, 52, 73, 94); 	// 4
 	init_color(COLOR_MAGENTA, 61, 35, 71); 	// 5
+	init_color(COLOR_YELLOW, 249, 105, 14); // 6
+
 
 	init_pair(1, COLOR_RED, COLOR_RED);
 	init_pair(2, COLOR_BLUE, COLOR_BLUE);
 	init_pair(3, COLOR_GREEN, COLOR_GREEN);
 	init_pair(4, COLOR_CYAN, COLOR_CYAN);
 	init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA);
+	init_pair(5, COLOR_YELLOW, COLOR_YELLOW);
+	init_pair(8, COLOR_RED, COLOR_BLACK);
 
 	this->_colorMap = {
 		{ eColor::BLACK, COLOR_BLACK },
@@ -48,7 +53,8 @@ NcursesHandler::NcursesHandler(int width, int height) : _w(width), _h(height){
 		{ eColor::BLUE, COLOR_PAIR(2) },
 		{ eColor::RED, COLOR_PAIR(1) },
 		{ eColor::GREEN, COLOR_PAIR(3) },
-		{ eColor::VIOLET, COLOR_PAIR(5) }
+		{ eColor::VIOLET, COLOR_PAIR(5) },
+		{ eColor::ORANGE, COLOR_PAIR(6) }
 	};
 }
 
@@ -123,6 +129,15 @@ void NcursesHandler::drawBlock(int x, int y, eColor color){
 void NcursesHandler::close(void){
     delwin(_window);
     endwin();
+}
+
+void NcursesHandler::drawBonus(int score){
+	int color = COLOR_PAIR(8);
+
+	std::string msg = "Score : " + std::to_string(score);
+	wattrset(_window, color);
+    mvwaddstr(_window, 0, 0, msg.c_str());
+	wattroff(_window, color);
 }
 
 extern "C" IGraphicHandler *create(int w, int h)

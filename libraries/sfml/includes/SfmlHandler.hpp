@@ -22,6 +22,7 @@ public:
 	void drawBlock(int x, int y, eColor color);
 	void show(void);
 	void close(void);
+	void drawBonus(int);
 
 	std::map<int, eKeys> getKeyMap();
 
@@ -33,6 +34,7 @@ private:
 	sf::RenderWindow *_window;
 	int	_w;
 	int _h;
+	sf::Font _font;
 };
 
 #endif //SFML_HANDLER_HPP

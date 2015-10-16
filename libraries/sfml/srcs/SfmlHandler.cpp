@@ -19,9 +19,12 @@ SfmlHandler::SfmlHandler(int width, int height) : _w(width), _h(height){
 		{ eColor::BLUE, sf::Color(22, 160, 133) },
 		{ eColor::RED, sf::Color(231, 76, 60) },
 		{ eColor::GREEN, sf::Color(46, 204, 113) },
-		{ eColor::VIOLET, sf::Color(61, 35, 71) }
+		{ eColor::VIOLET, sf::Color(224, 130, 131) },
+		{ eColor::ORANGE, sf::Color(242, 121, 53) }
 
 	};
+
+	if (!_font.loadFromFile("fonts/Orbitron-Regular.ttf")){ exit(EXIT_FAILURE); }
 
 	createWindow();
 }
@@ -112,6 +115,19 @@ void SfmlHandler::close(void){
 	if (_window->isOpen()){
 		_window->close();
 	}
+}
+
+void SfmlHandler::drawBonus(int score){
+	sf::Text text;
+
+	text.setFont(_font);
+	text.setString("Score : " + std::to_string(score));
+	text.setCharacterSize(24);
+	text.setColor(sf::Color(255, 255, 255));
+	text.setPosition(5, 5);
+	// text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+	_window->draw(text);
 }
 
 extern "C" IGraphicHandler *create(int w, int h)

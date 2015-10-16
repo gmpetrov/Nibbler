@@ -43,13 +43,13 @@ class Board{
 		Board(void);
 		void _growUp(void);
 		std::pair<int, int> _getRandomEmptyLocation(void);
-
 		int	_width;
 		int _height;
 		eDirection _direction;
 		std::vector<std::vector<eBlock>> _map;
 		std::vector<std::pair<int, int>> _snake;
 		std::pair<int, int> _food;
+		int _score;
 };
 
 #endif

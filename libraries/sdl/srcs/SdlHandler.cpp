@@ -19,7 +19,8 @@ SdlHandler::SdlHandler(int width, int height) : _w(width), _h(height){
 		{ eColor::BLUE, { 134, 226, 213 } },
 		{ eColor::RED, { 214, 69, 65 } },
 		{ eColor::GREEN, { 104, 195, 163 } },
-		{ eColor::VIOLET, { 190, 144, 212 } }
+		{ eColor::VIOLET, { 224, 130, 131 } },
+		{ eColor::ORANGE, { 242, 121, 53 } }
 
 	};
 
@@ -38,6 +39,16 @@ SdlHandler::SdlHandler(int width, int height) : _w(width), _h(height){
 		SDL_DestroyWindow(_window);
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
+		exit(EXIT_FAILURE);
+	}
+
+	if (TTF_Init() == -1) {
+		std::cout << "TTF_init error" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	if (!(_font = TTF_OpenFont("./fonts/PoiretOne-Regular.ttf", 24))){
+		std::cerr << "TTF_OpenFont failed" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -115,6 +126,29 @@ void SdlHandler::drawBlock(int x, int y, eColor color){
 void SdlHandler::close(void){
     SDL_DestroyWindow(_window);
     SDL_Quit();
+    TTF_CloseFont(_font);
+    TTF_Quit();
+}
+
+void SdlHandler::drawBonus(int score){
+
+	std::string msg = "Score : " + std::to_string(score);
+
+	SDL_Color color = {255, 255, 255, 255};
+
+	SDL_Surface *surface = TTF_RenderText_Blended(_font, msg.c_str(), color);
+
+	SDL_Texture *text = SDL_CreateTextureFromSurface(_renderer, surface);
+
+
+	SDL_Rect textRect;
+    textRect.x = 5;
+    textRect.y = 5;
+    textRect.w = surface->clip_rect.w;
+    textRect.h = surface->clip_rect.h;
+
+	SDL_RenderCopy(_renderer, text, NULL, &textRect);
+
 }
 
 extern "C" IGraphicHandler *create(int w, int h)

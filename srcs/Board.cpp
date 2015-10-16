@@ -14,7 +14,7 @@
 
 Board::Board(void){}
 
-Board::Board(int width, int height) : isAlive(true), _width(width), _height(height){
+Board::Board(int width, int height) : isAlive(true), _width(width), _height(height), _score(0){
 
 	// Init the map
 	std::vector<std::vector<eBlock>> init(_height, std::vector<eBlock>(_width));
@@ -111,13 +111,15 @@ void 	Board::drawMap(IGraphicHandler *graph){
 				graph->drawBlock(x, y, eColor::GREEN);
 			}
 			else if (_map[y][x] == eBlock::FOOD){
-				graph->drawBlock(x, y, eColor::RED);
+				graph->drawBlock(x, y, eColor::VIOLET);
 			}
 			else if (_map[y][x] == eBlock::SNAKE_HEAD){
 				graph->drawBlock(x, y, eColor::RED);
 			}
 		}
 	}
+
+	graph->drawBonus(_score);
 }
 
 void	Board::move(void){
@@ -193,6 +195,7 @@ void	Board::_growUp(void){
 
 	_snake.push_back(std::make_pair(x + 1, y));
 
+	_score += 1;
 }
 
 std::pair<int, int>	Board::_getRandomEmptyLocation(void){

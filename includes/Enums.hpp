@@ -28,7 +28,8 @@ enum eColor {
 	GREEN,
 	BLUE,
 	DARK_BLUE,
-	VIOLET
+	VIOLET,
+	ORANGE
 };
 
 enum eDirection{
