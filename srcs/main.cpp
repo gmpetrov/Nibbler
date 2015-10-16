@@ -50,21 +50,30 @@ int		main(int ac, char **av)
 
 	while (board.isAlive){
 		eKeys key = graphic.graph->getKeyPressed();
-		if (map.find(key) != map.end()){
-			// Pressed Key is mapped
-			if (key == eKeys::ONE)
-				graphic.setGraphic("sfml");
-			else if (key == eKeys::TWO)
-				graphic.setGraphic("ncurses");
-			else if (key == eKeys::THREE)
-				graphic.setGraphic("sdl");
-			else
-				board.handleKey(key);
+
+		try{
+			if (map.find(key) != map.end()){
+				// Pressed Key is mapped
+				if (key == eKeys::ONE)
+					graphic.setGraphic("sfml");
+				else if (key == eKeys::TWO)
+					graphic.setGraphic("ncurses");
+				else if (key == eKeys::THREE)
+					graphic.setGraphic("sdl");
+				else
+					board.handleKey(key);
+			}
+			else{
+				// Unknown Key or no key pressed so default iteration
+				board.move();
+			}
 		}
-		else{
-			// Unknown Key or no key pressed so default iteration
-			board.move();
+		catch(std::string const & e){
+			std::cout << e << std::endl;
+			graphic.graph->close();
+			exit(EXIT_SUCCESS);
 		}
+
 		graphic.graph->clearWindow();
 		board.drawMap(graphic.graph);
 		graphic.graph->show();

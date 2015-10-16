@@ -26,7 +26,6 @@ void	GraphSwitch::setGraphic(std::string g){
 	if (g.compare(_current) == 0){ return ; }
 
 	if (_dl_handler){
-		std::cout << "SALUT" << std::endl;
 		graph->close();
 		dlclose(_dl_handler);
 		_dl_handler = NULL;

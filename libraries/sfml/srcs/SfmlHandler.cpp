@@ -24,7 +24,6 @@ SfmlHandler::SfmlHandler(int width, int height) : _w(width), _h(height){
 	};
 
 	createWindow();
-	std::cout << "I'am the sfml shared library" << std::endl;
 }
 
 SfmlHandler::~SfmlHandler(void){}

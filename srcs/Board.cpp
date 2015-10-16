@@ -87,6 +87,8 @@ void	Board::updateMap(void){
 		}
 
 		if (x == _food.first && y == _food.second){
+			// Snake ate food
+
 			_map[y][x] = eBlock::SNAKE_HEAD;
 			_growUp();
 			_food = _getRandomEmptyLocation();
@@ -167,7 +169,7 @@ void	Board::setDirection(eDirection direction){
 
 void 	Board::handleKey(eKeys key){
 	if (key == eKeys::ESC){
-		quit();
+		throw std::string("You quit !");
 	}
 	else if (key == eKeys::UP && _direction != eDirection::BOTTOM){
 		setDirection(eDirection::TOP);
