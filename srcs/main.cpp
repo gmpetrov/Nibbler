@@ -35,7 +35,7 @@ int		main(int ac, char **av)
 
 	GraphSwitch graphic(std::atoi(av[1]), std::atoi(av[2]));
 
-	graphic.setGraphic("sdl");
+	graphic.setGraphic("sfml");
 
 	std::map<eKeys, std::string> map = {
 		{ eKeys::ESC, "ESC" },

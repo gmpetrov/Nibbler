@@ -3,7 +3,7 @@
 GraphSwitch::GraphSwitch(void){}
 
 GraphSwitch::GraphSwitch(int w, int h) : _w(w), _h(h){
-
+	_dl_handler = NULL;
 }
 
 
@@ -26,7 +26,8 @@ void	GraphSwitch::setGraphic(std::string g){
 	if (g.compare(_current) == 0){ return ; }
 
 	if (_dl_handler){
-		// graph->quit();
+		std::cout << "SALUT" << std::endl;
+		graph->close();
 		dlclose(_dl_handler);
 		_dl_handler = NULL;
 	}

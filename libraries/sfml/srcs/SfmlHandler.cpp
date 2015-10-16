@@ -89,18 +89,6 @@ sf::Color SfmlHandler::_getColor(eColor color){
 	return sf::Color(55, 55, 55);
 }
 
-// void SfmlHandler::draw(void){
-// 	// définit un rectangle de 120x50
-// 	sf::RectangleShape rectangle(sf::Vector2f(120, 50));
-
-// 	// change sa taille en 100x100
-// 	rectangle.setSize(sf::Vector2f(100, 100));
-// 	rectangle.setOutlineThickness(2);
-// 	rectangle.setOutlineColor(sf::Color::Green);
-
-// 	_window->draw(rectangle);
-// }
-
 void SfmlHandler::show(){
 	_window->display();
 }
