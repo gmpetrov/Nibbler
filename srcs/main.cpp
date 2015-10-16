@@ -17,7 +17,6 @@
 #include <unistd.h>
 #include <GraphSwitch.hpp>
 
-void 	dlerror_wrapper(void);
 void	usage(void);
 bool	isStringDigit(std::string s);
 void 	checkArgs(std::string s1, std::string s2);
@@ -37,36 +36,17 @@ int		main(int ac, char **av)
 
 	graphic.setGraphic("sfml");
 
-	std::map<eKeys, std::string> map = {
-		{ eKeys::ESC, "ESC" },
-		{ eKeys::UP, "UP" },
-		{ eKeys::DOWN, "DOWN" },
-		{ eKeys::LEFT, "LEFT" },
-		{ eKeys::RIGHT, "RIGHT" },
-		{ eKeys::ONE, "1" },
-		{ eKeys::TWO, "2" },
-		{ eKeys::THREE, "3" }
-	};
-
 	while (board.isAlive){
 		eKeys key = graphic.graph->getKeyPressed();
-
 		try{
-			if (map.find(key) != map.end()){
-				// Pressed Key is mapped
-				if (key == eKeys::ONE)
-					graphic.setGraphic("sfml");
-				else if (key == eKeys::TWO)
-					graphic.setGraphic("ncurses");
-				else if (key == eKeys::THREE)
-					graphic.setGraphic("sdl");
-				else
-					board.handleKey(key);
-			}
-			else{
-				// Unknown Key or no key pressed so default iteration
-				board.move();
-			}
+			if (key == eKeys::ONE)
+				graphic.setGraphic("sfml");
+			else if (key == eKeys::TWO)
+				graphic.setGraphic("ncurses");
+			else if (key == eKeys::THREE)
+				graphic.setGraphic("sdl");
+			else
+				board.handleKey(key);
 		}
 		catch(std::string const & e){
 			std::cout << e << std::endl;
@@ -78,19 +58,14 @@ int		main(int ac, char **av)
 		board.drawMap(graphic.graph);
 		graphic.graph->show();
 	}
-	// dlclose(dl_handler);
+	std::cout << "You are dead !" << std::endl;
+	graphic.graph->close();
 	return (0);
-}
-
-void 	dlerror_wrapper(void)
-{
-	std::cerr << "Error : " << dlerror() << std::endl;
-	exit(EXIT_FAILURE);
 }
 
 void	usage(void)
 {
-	std::cout << "[Usage] : ./nibbler [WIDTH] [HEIGHT]" << std::endl;
+	std::cout << "[Usage] : ./nibbler [ 10 <= WIDTH <= 300] [10 <= HEIGHT <= 300]" << std::endl;
 	exit(EXIT_FAILURE);
 }
 
@@ -105,6 +80,9 @@ bool	isStringDigit(std::string s){
 
 void 	checkArgs(std::string s1, std::string s2){
 	if (!isStringDigit(s1) || !isStringDigit(s2)){
+		usage();
+	}
+	else if (std::atoi(s1.c_str()) < 10 || std::atoi(s1.c_str()) > 300 || std::atoi(s2.c_str()) < 10 || std::atoi(s2.c_str()) > 300){
 		usage();
 	}
 }

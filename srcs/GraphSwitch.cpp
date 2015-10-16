@@ -6,10 +6,7 @@ GraphSwitch::GraphSwitch(int w, int h) : _w(w), _h(h){
 	_dl_handler = NULL;
 }
 
-
-GraphSwitch::~GraphSwitch(void){
-
-}
+GraphSwitch::~GraphSwitch(void){}
 
 GraphSwitch::GraphSwitch(const GraphSwitch & src){
 	*this = src;
@@ -32,7 +29,7 @@ void	GraphSwitch::setGraphic(std::string g){
 	}
 
 	// Open the graphic lib
-	if (!(_dl_handler = dlopen(("./libraries/" + g + "/lib" + g + ".so").c_str(), RTLD_LAZY | RTLD_LOCAL))){
+	if (!(_dl_handler = dlopen(("./libraries/" + g + "/lib" + g + ".so").c_str(), RTLD_LOCAL))){
 		std::cerr << "[dlopen] : Failed to open library" << std::endl;
 		exit(EXIT_FAILURE);
 	}

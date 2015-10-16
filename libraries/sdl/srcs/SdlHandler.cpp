@@ -15,11 +15,11 @@ SdlHandler::SdlHandler(int width, int height) : _w(width), _h(height){
 
 	this->_colorMap = {
 		{ eColor::BLACK, { 0, 0, 0 } },
-		{ eColor::DARK_BLUE, { 52, 73, 94 } },
-		{ eColor::BLUE, { 22, 160, 133 } },
-		{ eColor::RED, { 231, 76, 60 } },
-		{ eColor::GREEN, { 46, 204, 113 } },
-		{ eColor::VIOLET, { 61, 35, 71 } }
+		{ eColor::DARK_BLUE, { 51, 110, 123 } },
+		{ eColor::BLUE, { 134, 226, 213 } },
+		{ eColor::RED, { 214, 69, 65 } },
+		{ eColor::GREEN, { 104, 195, 163 } },
+		{ eColor::VIOLET, { 190, 144, 212 } }
 
 	};
 
@@ -28,7 +28,7 @@ SdlHandler::SdlHandler(int width, int height) : _w(width), _h(height){
 		exit(EXIT_FAILURE) ;
 	}
 
-	if (!(_window = SDL_CreateWindow("Nibbler", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _w, _h, SDL_WINDOW_SHOWN))){
+	if (!(_window = SDL_CreateWindow("SDL - Nibbler", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _w * BLOCK_SIZE, _h * BLOCK_SIZE, SDL_WINDOW_SHOWN))){
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		exit(EXIT_FAILURE);
@@ -107,7 +107,7 @@ void SdlHandler::clearWindow(void){
 }
 
 void SdlHandler::drawBlock(int x, int y, eColor color){
-    SDL_Rect rect = { x * (_w / NUM_BLOCKS_X), y * (_h / NUM_BLOCKS_Y), _w / NUM_BLOCKS_X , _h / NUM_BLOCKS_Y };
+    SDL_Rect rect = { x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE , BLOCK_SIZE };
     SDL_SetRenderDrawColor(_renderer, _colorMap[color][0], _colorMap[color][1], _colorMap[color][2], 255);
     SDL_RenderFillRect(_renderer, &rect);
 }

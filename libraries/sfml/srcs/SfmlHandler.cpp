@@ -54,7 +54,7 @@ std::map<int, eKeys>	SfmlHandler::getKeyMap(void){
 
 void SfmlHandler::createWindow(void)
 {
-    _window = new sf::RenderWindow(sf::VideoMode(_w, _h), "Nibbler");
+    _window = new sf::RenderWindow(sf::VideoMode(_w * BLOCK_SIZE, _h * BLOCK_SIZE), "SFML - Nibbler");
 }
 
 eKeys SfmlHandler::getKeyPressed(void)
@@ -99,9 +99,9 @@ void SfmlHandler::clearWindow(void){
 void SfmlHandler::drawBlock(int x, int y, eColor color){
 
 	// Create a Rectangle
-	sf::RectangleShape block(sf::Vector2f(_w / NUM_BLOCKS_X , _h / NUM_BLOCKS_Y));
+	sf::RectangleShape block(sf::Vector2f(BLOCK_SIZE ,BLOCK_SIZE));
 
-	block.setPosition(x * (_w / NUM_BLOCKS_X), y * (_h / NUM_BLOCKS_Y));
+	block.setPosition(x * BLOCK_SIZE, y  * BLOCK_SIZE);
 
 	block.setFillColor(_getColor(color));
 

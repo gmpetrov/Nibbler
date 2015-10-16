@@ -17,17 +17,17 @@ Board::Board(void){}
 Board::Board(int width, int height) : isAlive(true), _width(width), _height(height){
 
 	// Init the map
-	std::vector<std::vector<eBlock>> init(NUM_BLOCKS_Y, std::vector<eBlock>(100));
+	std::vector<std::vector<eBlock>> init(_height, std::vector<eBlock>(_width));
 	_map = init;
 
 	// Init Snake
 	std::vector<std::pair<int, int>> initSnake(4, std::pair<int, int>());
 	_snake = initSnake;
 
-	_snake[0] = std::make_pair(NUM_BLOCKS_X / 2, NUM_BLOCKS_Y / 2);
-	_snake[1] = std::make_pair((NUM_BLOCKS_X / 2) + 1, NUM_BLOCKS_Y / 2);
-	_snake[2] = std::make_pair((NUM_BLOCKS_X / 2) + 2, NUM_BLOCKS_Y / 2);
-	_snake[3] = std::make_pair((NUM_BLOCKS_X / 2) + 3, NUM_BLOCKS_Y / 2);
+	_snake[0] = std::make_pair(_width / 2, _height / 2);
+	_snake[1] = std::make_pair((_width / 2) + 1, _height / 2);
+	_snake[2] = std::make_pair((_width / 2) + 2, _height / 2);
+	_snake[3] = std::make_pair((_width / 2) + 3, _height / 2);
 
 	_direction = eDirection::BABORD;
 
@@ -62,8 +62,8 @@ std::vector<std::vector<eBlock>> Board::getMap(void){
 
 // Print Map method, for debugging purpose
 void	Board::printMap(void){
-	for (int y = 0 ; y < NUM_BLOCKS_Y; y++){
-		for (int x = 0; x < NUM_BLOCKS_X; x++){
+	for (int y = 0 ; y < _height; y++){
+		for (int x = 0; x < _width; x++){
 			std::cout << _map[y][x] ;
 		}
 		std::cout << std::endl;
@@ -102,8 +102,8 @@ void	Board::updateMap(void){
 }
 
 void 	Board::drawMap(IGraphicHandler *graph){
-	for (int y = 0 ; y < NUM_BLOCKS_Y; y++){
-		for (int x = 0; x < NUM_BLOCKS_X; x++){
+	for (int y = 0 ; y < _height; y++){
+		for (int x = 0; x < _width; x++){
 			if (_map[y][x] == eBlock::EMPTY){
 				graph->drawBlock(x, y, eColor::DARK_BLUE);
 			}
@@ -145,13 +145,13 @@ void	Board::move(void){
 	}
 	else if (_direction == eDirection::BOTTOM){
 		_snake[0].second += 1;
-		if (_snake[0].second >= NUM_BLOCKS_Y || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE)){
+		if (_snake[0].second >= _height || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE)){
 			isAlive = false;
 		}
 	}
 	else if (_direction == eDirection::TRIBORD){
 		_snake[0].first += 1;
-		if (_snake[0].first >= NUM_BLOCKS_X || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE))
+		if (_snake[0].first >= _width || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE))
 			isAlive = false;
 	}
 	else if (_direction == eDirection::BABORD || (_map[_snake[0].second][_snake[0].first] == eBlock::SNAKE)){
@@ -183,6 +183,7 @@ void 	Board::handleKey(eKeys key){
 	else if (key == eKeys::RIGHT && _direction != eDirection::BABORD){
 		setDirection(eDirection::TRIBORD);
 	}
+	move();
 }
 
 void	Board::_growUp(void){
@@ -197,8 +198,8 @@ void	Board::_growUp(void){
 std::pair<int, int>	Board::_getRandomEmptyLocation(void){
 	std::vector<std::pair<int, int>> locations;
 
-	for (int y = 0; y < NUM_BLOCKS_Y; y++){
-		for (int x = 0; x < NUM_BLOCKS_X; x++){
+	for (int y = 0; y < _height; y++){
+		for (int x = 0; x < _width; x++){
 			if (_map[y][x] == eBlock::EMPTY){
 				locations.push_back(std::make_pair(x, y));
 			}

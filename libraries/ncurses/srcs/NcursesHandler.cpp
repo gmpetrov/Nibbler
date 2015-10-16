@@ -2,15 +2,16 @@
 
 NcursesHandler::NcursesHandler(int width, int height) : _w(width), _h(height){
 
-	_window = initscr();
+	initscr();
 
-	getmaxyx(_window, _h, _w);
-
+	_window = newwin(_h, _w, 0, 0);
 	// Enable colors
 	start_color();
 
 	// Enable use of keyboards
-	keypad(_window,1);
+	keypad(stdscr,1);
+
+	nodelay(stdscr, TRUE);
 
 	// Key pressed not 'echoed'
 	noecho();
@@ -49,14 +50,10 @@ NcursesHandler::NcursesHandler(int width, int height) : _w(width), _h(height){
 		{ eColor::GREEN, COLOR_PAIR(3) },
 		{ eColor::VIOLET, COLOR_PAIR(5) }
 	};
-
-	clearWindow();
-	wrefresh(_window);
 }
 
 NcursesHandler::~NcursesHandler(void){
-	delwin(_window);
-	endwin();
+
 }
 
 NcursesHandler::NcursesHandler(const NcursesHandler & src)
@@ -91,7 +88,6 @@ void NcursesHandler::createWindow(void)
 eKeys NcursesHandler::getKeyPressed(void)
 {
 	int c;
-	nodelay(_window, TRUE);
 	usleep(200000);
     if ((c = getch()) != ERR) {
         if (_keyMap.find(c) != _keyMap.end()) {
@@ -112,7 +108,6 @@ int NcursesHandler::_getColor(eColor color){
 
 void NcursesHandler::show(){
 	wrefresh(_window);
-	// refresh();
 }
 
 void NcursesHandler::clearWindow(void){
@@ -123,7 +118,6 @@ void NcursesHandler::drawBlock(int x, int y, eColor color){
     wattrset(_window, _getColor(color));
     mvwaddch(_window, y, x, ' ');
     wattroff(_window, _getColor(color));
-
 }
 
 void NcursesHandler::close(void){
