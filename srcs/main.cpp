@@ -58,7 +58,7 @@ int		main(int ac, char **av)
 		board.drawMap(graphic.graph);
 		graphic.graph->show();
 	}
-	std::cout << "You are dead !" << std::endl;
+	std::cout << "You are dead !" << std::endl << "Score : " << board.getScore() << std::endl;
 	graphic.graph->close();
 	return (0);
 }

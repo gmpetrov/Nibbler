@@ -60,19 +60,28 @@ std::vector<std::vector<eBlock>> Board::getMap(void){
 	return _map;
 }
 
-// Print Map method, for debugging purpose
-void	Board::printMap(void){
-	for (int y = 0 ; y < _height; y++){
-		for (int x = 0; x < _width; x++){
-			std::cout << _map[y][x] ;
+bool	Board::_hasEaten(int index){
+	int x = _snake[index].first;
+	int y = _snake[index].second;
+
+	// Bonus Food
+	for (size_t i = 0; i < _bonus.size(); i++){
+		if (x == _bonus[i].first && y == _bonus[i].second){
+			_bonus.erase(_bonus.begin() + i);
+			return true;
 		}
-		std::cout << std::endl;
 	}
+
+	return false;
+
 }
 
 void	Board::updateMap(void){
 	if (!isAlive)
 		return ;
+
+	if (time(NULL) - _elapsedTime > 3)
+		removeBonus();
 
 	// Update snake position on the map
 	for (size_t i = 0; i < _snake.size(); i++){
@@ -92,6 +101,11 @@ void	Board::updateMap(void){
 			_map[y][x] = eBlock::SNAKE_HEAD;
 			_growUp();
 			_food = _getRandomEmptyLocation();
+			createBonus();
+		}
+		else if (_hasEaten(i)){
+			_map[y][x] = eBlock::SNAKE_HEAD;
+			_growUp();
 		}
 	}
 
@@ -115,6 +129,9 @@ void 	Board::drawMap(IGraphicHandler *graph){
 			}
 			else if (_map[y][x] == eBlock::SNAKE_HEAD){
 				graph->drawBlock(x, y, eColor::RED);
+			}
+			else if (_map[y][x] == eBlock::BONUS){
+				graph->drawBlock(x, y, eColor::ORANGE);
 			}
 		}
 	}
@@ -213,4 +230,31 @@ std::pair<int, int>	Board::_getRandomEmptyLocation(void){
 	int rnd = rand() % (size + 1);
 
 	return locations[rnd];
+}
+
+void	Board::createBonus(void){
+
+	// Select randomly number of bonuses
+	int rnd = rand() % (3 + 1);
+
+	for (int i = 0; i < rnd; i++){
+		std::pair<int, int> tmp = _getRandomEmptyLocation();
+		_map[tmp.second][tmp.first] = eBlock::BONUS;
+		_bonus.push_back(std::make_pair(tmp.first, tmp.second));
+	}
+	_elapsedTime = time(NULL);
+}
+
+void	Board::removeBonus(void){
+	for (size_t i = 0; i < _bonus.size(); i++){
+		int x = _bonus[i].first;
+		int y = _bonus[i].second;
+
+		_map[y][x] = eBlock::EMPTY;
+	}
+	_bonus.clear();
+}
+
+int	Board::getScore(void) const{
+	return _score;
 }

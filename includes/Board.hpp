@@ -31,17 +31,21 @@ class Board{
 		void quit();
 		std::vector<std::vector<eBlock>> getMap(void);
 		void initMap(void);
-		void printMap(void);
 		void drawMap(IGraphicHandler *graph);
 		void updateMap(void);
 		void move(void);
 		void setDirection(eDirection);
 		void handleKey(eKeys);
+		void createBonus(void);
+		void removeBonus(void);
 
 		bool isAlive;
+		int  getScore() const;
 	private:
 		Board(void);
 		void _growUp(void);
+		bool _hasEaten(int);
+
 		std::pair<int, int> _getRandomEmptyLocation(void);
 		int	_width;
 		int _height;
@@ -50,6 +54,8 @@ class Board{
 		std::vector<std::pair<int, int>> _snake;
 		std::pair<int, int> _food;
 		int _score;
+		std::vector<std::pair<int, int>> _bonus;
+		time_t _elapsedTime;
 };
 
 #endif

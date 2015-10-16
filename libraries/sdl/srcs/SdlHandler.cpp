@@ -47,7 +47,7 @@ SdlHandler::SdlHandler(int width, int height) : _w(width), _h(height){
 		exit(EXIT_FAILURE);
 	}
 
-	if (!(_font = TTF_OpenFont("./fonts/PoiretOne-Regular.ttf", 24))){
+	if (!(_font = TTF_OpenFont("./fonts/PoiretOne-Regular.ttf", 28))){
 		std::cerr << "TTF_OpenFont failed" << std::endl;
 		exit(EXIT_FAILURE);
 	}
